@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Shared\FormsEngine.Shared\FormsEngine.Shared.csproj" />
+    <ProjectReference Include="..\FormsService.Domain\FormsService.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

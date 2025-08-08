@@ -3,6 +3,7 @@ using System.Data;
 using Dapper;
 using RenderingService.Domain.Dtos;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+using System.Text.Json;
 
 namespace RenderingService.Infrastructure.Repositories;
 
@@ -15,7 +16,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
 
         _connection = connection;
-        _tableName = typeof(T).Name.ToLower()+"s"; // PostgreSQL tables are typically lowercase
+        _tableName = "public.\"" + typeof(T).Name.ToString() +  "s\"";
     }
     public Task AddAsync(T entity)
     {
@@ -32,33 +33,22 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
         var sql = $"SELECT * FROM {_tableName}";
         return await _connection.QueryAsync<T>(sql);
     }
-
-    //public async Task<IEnumerable<T>> GetAllAsync<V>(V id)
-    //{
-    //    const string sql = """
-    //    SELECT *
-    //    FROM   "Forms"
-    //    WHERE  "tenant_id" = @Id AND "state" = 'Published'
-    //    """;
-
-    //    return await _connection.QueryAsync<T>(sql, new { id});
-    //}
     
     public async Task<IEnumerable<T>> GetAllAsync<V>(V id)
     {
-        var raw = await _connection.QueryAsync("""SELECT * FROM public."Forms" WHERE tenant_id = @Id AND state = 'Published'""",new {id});
+        var raw = await _connection.QueryAsync($"""SELECT * FROM {_tableName} WHERE tenant_id = @Id AND state = 'Published'""", new {id});
 
-        var renderedForms = raw.Select(row => new RenderedForm(
-            row.id,
-            row.name,
-            row.description,
-            row.version,
-            row.state,
-            row.sections,
-            row.created_at,
-            row.created_by,
-            row.updated_at,
-            row.updated_by
+        var renderedForms = raw.Select(r => new Form(
+            id: (Guid)r.id,
+            name: (string)r.name,
+            description: (string)r.description,
+            version: (int)r.version,
+            state: (string)r.state,
+            sections: JsonSerializer.Deserialize<List<Section>>((string)r.sections)!,
+            created_at: (DateTime)r.created_at,
+            created_by: (string?)r.created_by,
+            updated_at: (DateTime?)r.updated_at,
+            updated_by: (string?)r.updated_by
         ));
         return renderedForms.Cast<T>().ToList();
     }

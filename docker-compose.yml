@@ -10,17 +10,17 @@ services:
   forms:
     build:
       context: .
-      dockerfile: src/Forms.Api/Dockerfile
+      dockerfile: src/FormsService/FormsService.Api/Dockerfile
     environment:
-      ConnectionStrings__FormsDb: "Host=db;Database=semanix_form_engine;Username=postgres;Password=postgres"
+      ConnectionStrings__DefaultConnection: "Host=db;Database=semanix_form_engine;Username=postgres;Password=postgres"
     ports: ["5062:8080"]
     depends_on: [db]
 
   rendering:
     build:
       context: .
-      dockerfile: src/Rendering.Api/Dockerfile
+      dockerfile: src/RenderingService/RenderingService.Api/Dockerfile
     environment:
-      ConnectionStrings__FormsDb: "Host=db;Database=semanix_form_engine;Username=postgres;Password=postgres"
+      ConnectionStrings__DefaultConnection: "Host=db;Database=semanix_form_engine;Username=postgres;Password=postgres"
     ports: ["5091:8080"]
     depends_on: [db]

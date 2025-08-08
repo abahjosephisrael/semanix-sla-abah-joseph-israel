@@ -10,6 +10,7 @@ public class GenericRepository<T>(FormsServiceDbContext context) : IGenericRepos
 
     public async Task<T?> GetByIdAsync<V>(V id) => await _dbSet.FindAsync(id);
     public async Task<IEnumerable<T>> GetAllAsync() => await _dbSet.ToListAsync();
+    public async Task<IEnumerable<T>> GetAllAsync<V>(V id) => await _dbSet.ToListAsync();
     public async Task AddAsync(T entity) => await _dbSet.AddAsync(entity);
     public void Update(T entity) => _context.Entry(entity).State = EntityState.Modified;
 

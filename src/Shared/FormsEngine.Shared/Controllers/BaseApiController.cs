@@ -1,7 +1,8 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace FormsService.Api.Controllers;
+namespace FormsEngine.Shared.Controllers;
 
 // This is the base controller for all API controllers in the FormsService application. All API controllers should inherit from this class to ensure consistent behavior and access to shared services like MediatR.
 [ApiController]

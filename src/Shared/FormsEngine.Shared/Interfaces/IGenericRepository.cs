@@ -6,6 +6,7 @@ public interface IGenericRepository<T> where T : class
     // Generic Id type V allows for flexibility in the type of identifier used.
     Task<T?> GetByIdAsync<V>(V id);
     Task<IEnumerable<T>> GetAllAsync();
+    Task<IEnumerable<T>> GetAllAsync<V>(V id);
     Task AddAsync(T entity);
     void Update(T entity);
     void Delete(T entity);

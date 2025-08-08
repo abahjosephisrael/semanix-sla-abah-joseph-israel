@@ -17,7 +17,7 @@ public static class ServiceRegistration
 
         var connString = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Production"
             ? Environment.GetEnvironmentVariable("DefaultConnection") : configuration.GetConnectionString("DefaultConnection");
-        services.AddHttpClient();
+
         services.AddDbContext<FormsServiceDbContext>(options =>
         options.UseNpgsql(
            connString,

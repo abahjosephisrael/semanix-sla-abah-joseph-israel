@@ -7,8 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="xunit.assert" />
-    <PackageReference Include="xunit.extensibility.core" />
+    <ProjectReference Include="..\..\Shared\FormsEngine.Shared\FormsEngine.Shared.csproj" />
+    <ProjectReference Include="..\RenderingService.Domain\RenderingService.Domain.csproj" />
   </ItemGroup>
 
 </Project>

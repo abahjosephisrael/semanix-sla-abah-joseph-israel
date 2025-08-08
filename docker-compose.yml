@@ -1,0 +1,26 @@
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: semanix_form_engine
+    ports: ["5432:5432"]
+
+  forms:
+    build:
+      context: .
+      dockerfile: src/Forms.Api/Dockerfile
+    environment:
+      ConnectionStrings__FormsDb: "Host=db;Database=semanix_form_engine;Username=postgres;Password=postgres"
+    ports: ["5062:8080"]
+    depends_on: [db]
+
+  rendering:
+    build:
+      context: .
+      dockerfile: src/Rendering.Api/Dockerfile
+    environment:
+      ConnectionStrings__FormsDb: "Host=db;Database=semanix_form_engine;Username=postgres;Password=postgres"
+    ports: ["5091:8080"]
+    depends_on: [db]
